@@ -42,9 +42,30 @@ def diff_eqs():
     return (var_list, expr_list)
 
 
+# Function to enter initial condition
+def init_conds():
+    """Reads in and returns initial conditions for variables"""
+    ic_list = []
+    ic_string = input("Enter initial value of variable: ")
+    ic_val = float(ic_string)
+    ic_list.append(ic_val)
+    return ic_list 
+
+
+# Function to enter stop time and time increment
+def time_params():
+    """Reads in and returns stop time and time increment"""
+    stop_time = float(input("Enter stop time: "))
+    time_inc = float(input("Enter time increment: "))
+    return (stop_time, time_inc)
+
+
 # --- Main code block ---
 # Call function diff_eqs()
 varList, exprList = diff_eqs()
 
+# Call function init_conds()
+icList = init_conds()
 
-
+# Call function time_params()
+stopTime, timeInc = time_params()
