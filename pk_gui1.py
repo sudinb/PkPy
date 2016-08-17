@@ -14,6 +14,10 @@ Author: Sudin Bhattacharya
 from sympy import *
 from math import *
 import parser
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
 
 # Function to enter and parse diff. eq.
 def diff_eqs():
@@ -32,7 +36,7 @@ def diff_eqs():
     exec(var_string + " = symbols('" + var_string + "')") 
 
     # Evaluate RHS of entered diff. eq.
-    rhs_expr = eval(parser.expr(rhs_string).compile())
+    rhs_expr = sympify(rhs_string)
     rhs_expr = expand(rhs_expr)    
     
     # Append variables and expressions to list
@@ -60,6 +64,20 @@ def time_params():
     return (stop_time, time_inc)
 
 
+# Function to return derivatives
+def f_derivs(varList, varVals, exprList, t):
+    """Returns derivatives evaluated at time t"""
+    derivVals = []
+    numVars = len(varVals)
+    for i in range(numVars):
+        derivVal = exprList[i].subs(varList[i], varVals[i])
+        derivVals.append(derivVal)
+        
+    return derivVals
+        
+    
+    
+
 # --- Main code block ---
 # Call function diff_eqs()
 varList, exprList = diff_eqs()
@@ -69,3 +87,9 @@ icList = init_conds()
 
 # Call function time_params()
 stopTime, timeInc = time_params()
+
+# Set up time array for ODE solver
+t = np.arange(0., stopTime, timeInc)
+
+# Bundle parameters for ODE solver
+params = []
